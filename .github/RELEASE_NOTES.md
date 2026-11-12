@@ -1,12 +1,13 @@
 ## 中文
 
-DeskNote 首个正式版本：一个支持自动保存、全局快捷键和亮暗主题的 Windows 桌面便签。
+DeskNote v1.1.0：条目分组配色与横向滚动。
 
-- `Alt+F3` 全局呼出 / 收起，失焦后自动靠后。
-- 多行纯文本、约 0.6 秒防抖自动保存。
-- `Ctrl+T` 切换亮色 / 暗色，记住主题偏好。
-- 可拉伸窗口、单实例、支持 `--startup` 静默启动。
-- 中英文使用文档及亮暗界面示意图。
+- 编辑区域改用 WPF 控件，便签仍以 UTF-8 纯文本保存。
+- 相邻条目轮换使用 6 种低饱和底色，亮色 / 暗色各一套，文字深浅和字号随条目轻微变化。
+- 名称下面紧跟的链接或列表项会自动分组，空行可强制分开条目。
+- 超长行不自动换行，支持横向滚动；滚动条随主题配色。
+- 粘贴仅保留纯文本，提供撤销、重做、剪切、复制、粘贴、全选右键菜单。
+- 保留全局快捷键、自动保存、主题切换和静默启动；同步更新中英文文档。
 
 **下载：** Windows 10 / 11 x64。推荐 `standalone.zip`（包含 .NET 运行时）；`framework-dependent.zip` 体积更小，需要 .NET 10 Desktop Runtime x64。解压后运行 `DeskNote.exe`，无需安装。应用界面目前为中文。
 
@@ -14,13 +15,14 @@ DeskNote 首个正式版本：一个支持自动保存、全局快捷键和亮�
 
 ## English
 
-The first stable release of DeskNote: a small Windows desktop notepad with automatic saving, a global shortcut, and light/dark themes.
+DeskNote v1.1.0: tinted entry groups and horizontal scrolling.
 
-- Global `Alt+F3` shortcut to show or hide; moves behind other windows on focus loss.
-- Multiline plain text, saved automatically after about 0.6 seconds of inactivity.
-- `Ctrl+T` theme switching with a remembered preference.
-- Resizable window, single-instance operation, and hidden launch with `--startup`.
-- Chinese and English documentation with light/dark UI illustrations.
+- A WPF editing surface; notes continue to be saved as UTF-8 plain text.
+- Six alternating, low-saturation entry backgrounds for each theme, with subtle variations in text tone and size.
+- Links and list items directly below a name are grouped automatically; blank lines separate entries.
+- Long lines scroll horizontally instead of wrapping, with theme-aware scrollbars.
+- Plain-text paste and a context menu for undo, redo, cut, copy, paste, and select all.
+- Global shortcuts, automatic saving, theme switching, and hidden startup remain available; Chinese and English documentation has been updated.
 
 **Download:** Windows 10 / 11 x64. Choose `standalone.zip` for the bundled .NET runtime, or `framework-dependent.zip` if .NET 10 Desktop Runtime x64 is already installed. Extract and run `DeskNote.exe`; no installer is required. The app interface is currently in Chinese.
 
