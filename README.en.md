@@ -2,7 +2,7 @@
 
 [简体中文](README.md) | **English**
 
-A quiet Windows desktop notepad. Press `Alt+F3`, capture a thought, and get back to work. Your notes save automatically.
+A quiet Windows desktop notepad. Press `Alt+F3` (customizable), capture a thought, and get back to work. Your notes save automatically.
 
 [Download the latest release](https://github.com/suboy1219/desk-note/releases/latest) · [All releases](https://github.com/suboy1219/desk-note/releases)
 
@@ -12,7 +12,7 @@ A quiet Windows desktop notepad. Press `Alt+F3`, capture a thought, and get back
 
 ## Features
 
-- **Always within reach**: global `Alt+F3` shortcut to show or hide, with the note brought to the front and focused.
+- **Always within reach**: a global shortcut shows or hides the note, brought to the front and focused. The default is `Alt+F3`; change it via the **快捷键** button at the bottom right.
 - **Stay focused**: switching to another app removes the always-on-top state and moves the note behind other windows. No taskbar button during normal use.
 - **Automatic saving**: saves about 0.6 seconds after typing stops, and on focus loss or exit.
 - **Light and dark themes**: use `Ctrl+T` or the bottom-right button; your preference is remembered.
@@ -27,23 +27,25 @@ Choose a **Windows x64** ZIP from [Releases](https://github.com/suboy1219/desk-n
 
 | File | Best for | Requirements |
 | --- | --- | --- |
-| `DeskNote-v1.1.0-win-x64-standalone.zip` | Recommended for most users | Includes the .NET runtime |
-| `DeskNote-v1.1.0-win-x64-framework-dependent.zip` | Users who already have .NET | .NET 10 Desktop Runtime x64 |
+| `DeskNote-v1.2.0-win-x64-standalone.zip` | Recommended for most users | Includes the .NET runtime |
+| `DeskNote-v1.2.0-win-x64-framework-dependent.zip` | Users who already have .NET | .NET 10 Desktop Runtime x64 |
 | `SHA256SUMS.txt` | Verifying downloads | Compare SHA-256 file hashes |
 
 Supports Windows 10 / 11 x64; no installer is needed. The standalone build extracts its bundled native libraries to a temporary directory on first launch. The smaller build requires [.NET 10 Desktop Runtime x64](https://dotnet.microsoft.com/download/dotnet/10.0).
 
-> There is normally no taskbar button. Use `Alt+F3` to bring the note back after hiding it. If another app has claimed the shortcut, DeskNote shows a warning and falls back to a taskbar button.
+> There is normally no taskbar button. Use your current shortcut (default `Alt+F3`) to bring the note back after hiding it. If another app has claimed the shortcut, DeskNote shows a warning and falls back to a taskbar button.
 
 ## Keyboard shortcuts
 
 | Shortcut | Action |
 | --- | --- |
-| `Alt+F3` | Show / hide from any app |
+| `Alt+F3` (default, customizable) | Show / hide from any app |
 | `Esc` | Hide the window |
 | `Ctrl+S` | Save immediately |
 | `Ctrl+T` | Toggle light / dark theme |
 | `Alt+F4` or the top-right `X` | Exit |
+
+Click the **快捷键** button at the bottom right, press a new combination (it must include `Ctrl` or `Alt`; `Shift` is optional), then click **保存** to apply and remember it. **恢复默认** restores `Alt+F3`.
 
 ## Start at sign-in (optional)
 
@@ -57,16 +59,16 @@ DeskNote does not create a startup entry automatically.
    %APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup
    ```
 
-The app starts hidden at sign-in; press `Alt+F3` to show it. Delete the shortcut to disable startup launch. Starting without arguments shows the window immediately. `--silent` is an alias for `--startup`.
+The app starts hidden at sign-in; press your current shortcut (default `Alt+F3`) to show it. Delete the shortcut to disable startup launch. Starting without arguments shows the window immediately. `--silent` is an alias for `--startup`.
 
 ## Data and backups
 
 | File | Location |
 | --- | --- |
 | Note contents (UTF-8 plain text) | `%APPDATA%\DeskNote\note.txt` |
-| Theme preference | `%APPDATA%\DeskNote\settings.json` |
+| Theme and shortcut preferences | `%APPDATA%\DeskNote\settings.json` |
 
-Exit the app before copying or restoring `note.txt`. To update, replace the program files; your note is stored separately. Delete `settings.json` to restore the default light theme.
+Exit the app before copying or restoring `note.txt`. To update, replace the program files; your note is stored separately. Delete `settings.json` to restore the default light theme and the `Alt+F3` shortcut.
 
 ## Build from source
 
@@ -98,11 +100,12 @@ Pushing a `v*.*.*` version tag triggers the [release workflow](.github/workflows
 | --- | --- |
 | `Program.cs` | Entry point, single-instance handling, and launch arguments |
 | `NoteForm.cs` | Editing, automatic saving, themes, and window behavior |
+| `HotkeyDialog.cs` | Shortcut-change dialog and key validation |
 | `Interop.cs` | Win32 hotkeys, window ordering, and theme APIs |
 | `app.ico` | Application icon |
 
 ## Limitations
 
 - One plain-text note; no images, rich text, multiple pages, or cloud sync.
-- If another app uses `Alt+F3`, close the conflicting app and restart DeskNote.
+- If another app uses the default `Alt+F3`, click the **快捷键** button at the bottom right to choose another combination.
 - Documentation is available in Chinese and English; the app's buttons and messages are currently in Chinese.

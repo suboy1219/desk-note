@@ -100,6 +100,7 @@ internal sealed class NoteForm : Form
     private readonly Label _hint;
     private readonly Label _status;
     private readonly Button _themeButton;
+    private readonly Button _hotkeyButton;
     private readonly Panel _footer;
     private readonly Panel _editorHost;
     private readonly System.Windows.Forms.Timer _saveTimer;
@@ -116,6 +117,9 @@ internal sealed class NoteForm : Form
     private bool _loading;
     private string _colorSignature = string.Empty;
     private string _savedText = string.Empty;
+    private uint _hotkeyModifiers = NativeMethods.ModAlt;
+    private uint _hotkeyKey = NativeMethods.VkF3;
+    private string _hotkeyText = "Alt+F3";
 
     public NoteForm(bool startHidden = false)
     {
@@ -126,7 +130,7 @@ internal sealed class NoteForm : Form
             "DeskNote");
         _notePath = Path.Combine(appDir, "note.txt");
         _settingsPath = Path.Combine(appDir, "settings.json");
-        _dark = LoadTheme() == "dark";
+        LoadSettings();
 
         AutoScaleMode = AutoScaleMode.Dpi;
         Text = "便签";
@@ -204,7 +208,7 @@ internal sealed class NoteForm : Form
             Dock = DockStyle.Fill,
             TextAlign = ContentAlignment.MiddleLeft,
             Font = new Font("Microsoft YaHei UI", 9f),
-            Text = "Alt+F3 呼出 · 失焦自动靠后 · 内容自动保存",
+            Text = _hotkeyText + " 呼出 · 失焦自动靠后 · 内容自动保存",
             AutoEllipsis = true,
         };
 
@@ -223,6 +227,22 @@ internal sealed class NoteForm : Form
         _themeButton.Click += (_, _) => ToggleTheme();
         _toolTip.SetToolTip(_themeButton, "切换亮色 / 暗色（Ctrl+T）");
 
+        _hotkeyButton = new Button
+        {
+            Dock = DockStyle.Right,
+            Width = 62,
+            FlatStyle = FlatStyle.Flat,
+            Font = new Font("Microsoft YaHei UI", 9f),
+            TextAlign = ContentAlignment.MiddleCenter,
+            Text = "快捷键",
+            TabStop = false,
+            Cursor = Cursors.Hand,
+            UseVisualStyleBackColor = false,
+        };
+        _hotkeyButton.FlatAppearance.BorderSize = 0;
+        _hotkeyButton.Click += (_, _) => ChangeHotkey();
+        _toolTip.SetToolTip(_hotkeyButton, "更换全局呼出快捷键（当前 " + _hotkeyText + "）");
+
         _footer = new Panel
         {
             Dock = DockStyle.Bottom,
@@ -231,6 +251,7 @@ internal sealed class NoteForm : Form
         };
         _footer.Controls.Add(_status);
         _footer.Controls.Add(_themeButton);
+        _footer.Controls.Add(_hotkeyButton);
 
         Controls.Add(_editorHost);
         Controls.Add(_footer);
@@ -280,15 +301,15 @@ internal sealed class NoteForm : Form
         _hotkeyRegistered = NativeMethods.RegisterHotKey(
             Handle,
             HotKeyId,
-            NativeMethods.ModAlt,
-            NativeMethods.VkF3);
+            _hotkeyModifiers,
+            _hotkeyKey);
 
         if (!_hotkeyRegistered)
         {
             ShowInTaskbar = true;
             _status.ForeColor = Color.FromArgb(196, 92, 78);
-            _status.Text = "Alt+F3 注册失败：已被占用，暂在任务栏显示";
-            Text = "便签（Alt+F3 不可用）";
+            _status.Text = _hotkeyText + " 注册失败：已被占用，暂在任务栏显示";
+            Text = "便签（" + _hotkeyText + " 不可用）";
         }
     }
 
@@ -396,8 +417,121 @@ internal sealed class NoteForm : Form
     {
         _dark = !_dark;
         ApplyTheme();
-        SaveTheme();
+        SaveSettings();
     }
+
+    private void ChangeHotkey()
+    {
+        var previousModifiers = _hotkeyModifiers;
+        var previousKey = _hotkeyKey;
+        var wasTopMost = TopMost;
+
+        if (_hotkeyRegistered)
+        {
+            NativeMethods.UnregisterHotKey(Handle, HotKeyId);
+            _hotkeyRegistered = false;
+        }
+
+        TopMost = false;
+        _suppressDeactivate = true;
+        try
+        {
+            using var dialog = new HotkeyDialog(_hotkeyModifiers, _hotkeyKey, _dark)
+            {
+                Owner = this,
+            };
+
+            if (dialog.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
+
+            var requestedText = HotkeyDialog.Describe(dialog.Modifiers, dialog.KeyCode);
+            if (!TryRegisterHotkey(dialog.Modifiers, dialog.KeyCode))
+            {
+                _status.ForeColor = Color.FromArgb(196, 92, 78);
+                _status.Text = requestedText + " 注册失败，仍使用 " + _hotkeyText;
+                MessageBox.Show(
+                    this,
+                    requestedText + " 注册失败，可能已被系统或其他程序占用。",
+                    "更换快捷键",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            _status.ForeColor = _palette.Muted;
+            _status.Text = "快捷键已更新：" + _hotkeyText;
+        }
+        finally
+        {
+            _suppressDeactivate = false;
+            TopMost = wasTopMost;
+
+            if (!_hotkeyRegistered)
+            {
+                _hotkeyRegistered = NativeMethods.RegisterHotKey(
+                    Handle,
+                    HotKeyId,
+                    previousModifiers,
+                    previousKey);
+
+                if (!_hotkeyRegistered)
+                {
+                    ShowInTaskbar = true;
+                    Text = "便签（" + _hotkeyText + " 不可用）";
+                }
+            }
+        }
+
+        Activate();
+        _editorElementHost.Focus();
+        _editor.Focus();
+    }
+
+    private bool TryRegisterHotkey(uint modifiers, uint key)
+    {
+        if (modifiers == _hotkeyModifiers && key == _hotkeyKey && _hotkeyRegistered)
+        {
+            return true;
+        }
+
+        if (_hotkeyRegistered)
+        {
+            NativeMethods.UnregisterHotKey(Handle, HotKeyId);
+            _hotkeyRegistered = false;
+        }
+
+        if (NativeMethods.RegisterHotKey(Handle, HotKeyId, modifiers, key))
+        {
+            _hotkeyRegistered = true;
+            _hotkeyModifiers = modifiers;
+            _hotkeyKey = key;
+            _hotkeyText = HotkeyDialog.Describe(modifiers, key);
+            ShowInTaskbar = false;
+            Text = "便签";
+            SaveSettings();
+            UpdateHotkeyUi();
+            return true;
+        }
+
+        _hotkeyRegistered = NativeMethods.RegisterHotKey(
+            Handle,
+            HotKeyId,
+            _hotkeyModifiers,
+            _hotkeyKey);
+
+        if (!_hotkeyRegistered)
+        {
+            ShowInTaskbar = true;
+            Text = "便签（" + _hotkeyText + " 不可用）";
+        }
+
+        return false;
+    }
+
+    private void UpdateHotkeyUi() =>
+        _toolTip.SetToolTip(_hotkeyButton, "更换全局呼出快捷键（当前 " + _hotkeyText + "）");
 
     private void ApplyTheme()
     {
@@ -425,7 +559,13 @@ internal sealed class NoteForm : Form
         _themeButton.FlatAppearance.MouseDownBackColor = _palette.Hover;
         _themeButton.Text = _dark ? "亮色" : "暗色";
 
+        _hotkeyButton.BackColor = _palette.Footer;
+        _hotkeyButton.ForeColor = _palette.Muted;
+        _hotkeyButton.FlatAppearance.MouseOverBackColor = _palette.Hover;
+        _hotkeyButton.FlatAppearance.MouseDownBackColor = _palette.Hover;
+
         _toolTip.SetToolTip(_themeButton, _dark ? "切换到亮色主题（Ctrl+T）" : "切换到暗色主题（Ctrl+T）");
+        _toolTip.SetToolTip(_hotkeyButton, "更换全局呼出快捷键（当前 " + _hotkeyText + "）");
 
         if (IsHandleCreated)
         {
@@ -469,38 +609,50 @@ internal sealed class NoteForm : Form
             | NativeMethods.SwpFrameChanged);
     }
 
-    private string LoadTheme()
+    private void LoadSettings()
     {
         try
         {
-            if (!File.Exists(_settingsPath))
+            if (File.Exists(_settingsPath))
             {
-                return "light";
+                var settings = JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(_settingsPath));
+                if (settings is not null)
+                {
+                    _dark = settings.Theme == "dark";
+                    if (HotkeyDialog.IsValid(settings.HotkeyModifiers, settings.HotkeyKey))
+                    {
+                        _hotkeyModifiers = settings.HotkeyModifiers;
+                        _hotkeyKey = settings.HotkeyKey;
+                    }
+                }
             }
-
-            var settings = JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(_settingsPath));
-            return settings?.Theme == "dark" ? "dark" : "light";
         }
         catch (Exception ex) when (ex is IOException || ex is JsonException || ex is UnauthorizedAccessException)
         {
-            return "light";
         }
+
+        _hotkeyText = HotkeyDialog.Describe(_hotkeyModifiers, _hotkeyKey);
     }
 
-    private void SaveTheme()
+    private void SaveSettings()
     {
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(_settingsPath)!);
             var json = JsonSerializer.Serialize(
-                new AppSettings { Theme = _dark ? "dark" : "light" },
+                new AppSettings
+                {
+                    Theme = _dark ? "dark" : "light",
+                    HotkeyModifiers = _hotkeyModifiers,
+                    HotkeyKey = _hotkeyKey,
+                },
                 new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(_settingsPath, json);
         }
         catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
         {
             _status.ForeColor = Color.FromArgb(196, 92, 78);
-            _status.Text = "保存主题设置失败：" + ex.Message;
+            _status.Text = "保存设置失败：" + ex.Message;
         }
     }
 
@@ -650,7 +802,7 @@ internal sealed class NoteForm : Form
             _savedText = text;
             _dirty = false;
             _status.ForeColor = _palette.Muted;
-            _status.Text = "已保存 " + DateTime.Now.ToString("HH:mm:ss") + " · Alt+F3 呼出";
+            _status.Text = "已保存 " + DateTime.Now.ToString("HH:mm:ss") + " · " + _hotkeyText + " 呼出";
         }
         catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
         {
@@ -1025,5 +1177,9 @@ internal sealed class NoteForm : Form
     private sealed class AppSettings
     {
         public string Theme { get; set; } = "light";
+
+        public uint HotkeyModifiers { get; set; } = NativeMethods.ModAlt;
+
+        public uint HotkeyKey { get; set; } = NativeMethods.VkF3;
     }
 }
