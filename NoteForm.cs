@@ -835,8 +835,6 @@ internal sealed class NoteForm : Form
         _colorSignature = signature;
 
         var entryIndex = 0;
-        var groupIndex = -1;
-        var previousWasUrl = false;
 
         foreach (var paragraph in paragraphs)
         {
@@ -845,30 +843,14 @@ internal sealed class NoteForm : Form
             {
                 paragraph.Background = null;
                 paragraph.Margin = new WpfThickness(0);
-                groupIndex = -1;
-                previousWasUrl = false;
                 continue;
             }
 
-            var isUrl = StartsWithLink(line);
-            var isList = StartsWithListMarker(line);
-            var startsEntry = groupIndex < 0;
-            if (groupIndex < 0)
-            {
-                groupIndex = entryIndex++;
-            }
-            else if (!isList && (!isUrl || previousWasUrl))
-            {
-                groupIndex = entryIndex++;
-                startsEntry = true;
-            }
-
-            var variant = groupIndex % _palette.Tints.Length;
+            var variant = entryIndex++ % _palette.Tints.Length;
             paragraph.Background = ToBrush(_palette.Tints[variant]);
             paragraph.Foreground = ToBrush(_palette.EntryInks[variant]);
             paragraph.FontSize = EntrySizes[variant];
-            paragraph.Margin = new WpfThickness(0, startsEntry ? 12 : 0, 0, 0);
-            previousWasUrl = isUrl;
+            paragraph.Margin = new WpfThickness(0, 12, 0, 0);
         }
 
         UpdateDocumentWidth();
@@ -984,34 +966,6 @@ internal sealed class NoteForm : Form
             .Text
             .Replace("\r\n", "\n")
             .Replace('\r', '\n');
-
-    private static bool StartsWithLink(string line) =>
-        line.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
-        || line.StartsWith("https://", StringComparison.OrdinalIgnoreCase);
-
-    private static bool StartsWithListMarker(string line)
-    {
-        if (line.StartsWith("- ")
-            || line.StartsWith("* ")
-            || line.StartsWith("• ")
-            || line.StartsWith("· "))
-        {
-            return true;
-        }
-
-        var index = 0;
-        while (index < line.Length && char.IsDigit(line[index]))
-        {
-            index++;
-        }
-
-        if (index == 0 || index + 1 >= line.Length)
-        {
-            return false;
-        }
-
-        return (line[index] == '.' || line[index] == ')' || line[index] == '、') && line[index + 1] == ' ';
-    }
 
     private void UpdateHint() =>
         _hint.Visible = GetEditorText().Length == 0 && !_editor.IsKeyboardFocusWithin;

@@ -17,7 +17,7 @@ A quiet Windows desktop notepad. Press `Alt+F3` (customizable), capture a though
 - **Automatic saving**: saves about 0.6 seconds after typing stops, and on focus loss or exit.
 - **Light and dark themes**: use `Ctrl+T` or the bottom-right button; your preference is remembered.
 - **Simple editing**: multiline plain text, tabs, no auto-wrap (long lines scroll horizontally), and a resizable window, with a minimum size of 300 × 220.
-- **One tint per entry**: adjacent entries cycle through six low-saturation background tints, with a separate set for light and dark themes. Entries are separated by a little space, and text tone and size shift subtly from entry to entry. One line is one entry; an `http(s)://` link or a `- ` list item directly under a name joins that entry automatically, and a blank line always starts a new one.
+- **One tint per entry**: adjacent entries cycle through six low-saturation background tints, with a separate set for light and dark themes. Entries are separated by a little space, and text tone and size shift subtly from entry to entry. Each nonempty line is a separate entry, including links and list items.
 - **Single instance**: launching again does not open another note.
 - **Optional startup launch**: `--startup` starts hidden at sign-in, ready for the global shortcut.
 
@@ -27,8 +27,8 @@ Choose a **Windows x64** ZIP from [Releases](https://github.com/suboy1219/desk-n
 
 | File | Best for | Requirements |
 | --- | --- | --- |
-| `DeskNote-v1.2.0-win-x64-standalone.zip` | Recommended for most users | Includes the .NET runtime |
-| `DeskNote-v1.2.0-win-x64-framework-dependent.zip` | Users who already have .NET | .NET 10 Desktop Runtime x64 |
+| `DeskNote-v1.2.1-win-x64-standalone.zip` | Recommended for most users | Includes the .NET runtime |
+| `DeskNote-v1.2.1-win-x64-framework-dependent.zip` | Users who already have .NET | .NET 10 Desktop Runtime x64 |
 | `SHA256SUMS.txt` | Verifying downloads | Compare SHA-256 file hashes |
 
 Supports Windows 10 / 11 x64; no installer is needed. The standalone build extracts its bundled native libraries to a temporary directory on first launch. The smaller build requires [.NET 10 Desktop Runtime x64](https://dotnet.microsoft.com/download/dotnet/10.0).
