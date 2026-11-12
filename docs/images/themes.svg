@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="780" viewBox="0 0 1040 780">
+<title>DeskNote light and dark theme illustrations</title>
+<desc>Illustrations based on DeskNote window layout, with public sample notes. Not screenshots.</desc>
+<rect width="1040" height="780" fill="#edf0ed"/>
+<text x="56" y="63" fill="#252b29" font-family="Microsoft YaHei,Arial,sans-serif" font-size="30" font-weight="700">DeskNote · 便签</text>
+<text x="56" y="96" fill="#68736d" font-family="Microsoft YaHei,Arial,sans-serif" font-size="16" font-weight="400">随手记，随时找回。  /  A quiet place for your thoughts.</text>
+<rect x="849" y="41" width="135" height="36" rx="18" fill="#dfe7de"/>
+<text x="872" y="65" fill="#344d3c" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="700">Alt + F3</text>
+<text x="56" y="134" fill="#68736d" font-family="Microsoft YaHei,Arial,sans-serif" font-size="12" font-weight="700">LIGHT / 亮色</text>
+<rect x="56" y="154" width="432" height="552" rx="8" fill="#fbfaf7" stroke="#b9c0b9"/>
+<rect x="57" y="155" width="430" height="33" rx="7" fill="#ffffff"/>
+<rect x="57" y="176" width="430" height="12" rx="0" fill="#ffffff"/>
+<rect x="68" y="165" width="13" height="14" rx="2" fill="#efc964"/>
+<path d="M76,166 L76,170" fill="none" stroke="#b29343" stroke-width="1"/>
+<text x="89" y="174" fill="#212121" font-family="Microsoft YaHei,Arial,sans-serif" font-size="12" font-weight="400">便签</text>
+<path d="M377,170 L387,170" fill="none" stroke="#212121" stroke-width="1"/>
+<rect x="414" y="166" width="9" height="9" fill="none" stroke="#212121"/>
+<path d="M458,166 L467,175" fill="none" stroke="#212121" stroke-width="1"/>
+<path d="M467,166 L458,175" fill="none" stroke="#212121" stroke-width="1"/>
+<text x="73" y="220" fill="#212121" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">随手记，随时找回。</text>
+<text x="73" y="247" fill="#212121" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">A quiet place for your thoughts.</text>
+<text x="73" y="301" fill="#212121" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">今天 / Today</text>
+<text x="73" y="328" fill="#212121" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">• 整理灵感，专注眼前的事</text>
+<text x="73" y="355" fill="#212121" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">• Capture an idea before it slips away</text>
+<text x="73" y="382" fill="#212121" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">• 给自己留一点空白</text>
+<text x="73" y="436" fill="#212121" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">Alt+F3   呼出 / 收起</text>
+<text x="73" y="463" fill="#212121" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">Ctrl+T   亮色 / 暗色</text>
+<text x="73" y="490" fill="#212121" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">Ctrl+S   立即保存</text>
+<text x="73" y="544" fill="#212121" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">内容自动保存，安心继续。</text>
+<text x="73" y="571" fill="#212121" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">Your notes are saved automatically.</text>
+<rect x="475" y="193" width="5" height="474" rx="2" fill="#eeede9"/>
+<rect x="475" y="198" width="5" height="112" rx="2" fill="#c9c8c2"/>
+<rect x="57" y="679" width="430" height="26" rx="0" fill="#f1f0eb"/>
+<text x="69" y="695" fill="#80807c" font-family="Microsoft YaHei,Arial,sans-serif" font-size="10" font-weight="400">Alt+F3 呼出 · 失焦自动靠后 · 内容自动保存</text>
+<text x="446" y="695" fill="#80807c" font-family="Microsoft YaHei,Arial,sans-serif" font-size="10" font-weight="400">暗色</text>
+<text x="552" y="134" fill="#68736d" font-family="Microsoft YaHei,Arial,sans-serif" font-size="12" font-weight="700">DARK / 暗色</text>
+<rect x="552" y="154" width="432" height="552" rx="8" fill="#1e1e22" stroke="#303035"/>
+<rect x="553" y="155" width="430" height="33" rx="7" fill="#202024"/>
+<rect x="553" y="176" width="430" height="12" rx="0" fill="#202024"/>
+<rect x="564" y="165" width="13" height="14" rx="2" fill="#efc964"/>
+<path d="M572,166 L572,170" fill="none" stroke="#b29343" stroke-width="1"/>
+<text x="585" y="174" fill="#e4e4e8" font-family="Microsoft YaHei,Arial,sans-serif" font-size="12" font-weight="400">便签</text>
+<path d="M873,170 L883,170" fill="none" stroke="#e4e4e8" stroke-width="1"/>
+<rect x="910" y="166" width="9" height="9" fill="none" stroke="#e4e4e8"/>
+<path d="M954,166 L963,175" fill="none" stroke="#e4e4e8" stroke-width="1"/>
+<path d="M963,166 L954,175" fill="none" stroke="#e4e4e8" stroke-width="1"/>
+<text x="569" y="220" fill="#e4e4e8" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">随手记，随时找回。</text>
+<text x="569" y="247" fill="#e4e4e8" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">A quiet place for your thoughts.</text>
+<text x="569" y="301" fill="#e4e4e8" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">今天 / Today</text>
+<text x="569" y="328" fill="#e4e4e8" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">• 整理灵感，专注眼前的事</text>
+<text x="569" y="355" fill="#e4e4e8" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">• Capture an idea before it slips away</text>
+<text x="569" y="382" fill="#e4e4e8" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">• 给自己留一点空白</text>
+<text x="569" y="436" fill="#e4e4e8" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">Alt+F3   呼出 / 收起</text>
+<text x="569" y="463" fill="#e4e4e8" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">Ctrl+T   亮色 / 暗色</text>
+<text x="569" y="490" fill="#e4e4e8" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">Ctrl+S   立即保存</text>
+<text x="569" y="544" fill="#e4e4e8" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">内容自动保存，安心继续。</text>
+<text x="569" y="571" fill="#e4e4e8" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" font-weight="400">Your notes are saved automatically.</text>
+<rect x="971" y="193" width="5" height="474" rx="2" fill="#2b2b30"/>
+<rect x="971" y="198" width="5" height="112" rx="2" fill="#5a5a62"/>
+<rect x="553" y="679" width="430" height="26" rx="0" fill="#17171b"/>
+<text x="565" y="695" fill="#8c8c96" font-family="Microsoft YaHei,Arial,sans-serif" font-size="10" font-weight="400">Alt+F3 呼出 · 失焦自动靠后 · 内容自动保存</text>
+<text x="942" y="695" fill="#8c8c96" font-family="Microsoft YaHei,Arial,sans-serif" font-size="10" font-weight="400">亮色</text>
+<text x="56" y="753" fill="#68736d" font-family="Microsoft YaHei,Arial,sans-serif" font-size="12" font-weight="400">界面示意 · UI illustration</text>
+<text x="722" y="753" fill="#68736d" font-family="Microsoft YaHei,Arial,sans-serif" font-size="12" font-weight="400">Windows   /   Plain text   /   Auto-save</text>
+</svg>

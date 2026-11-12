@@ -1,70 +1,107 @@
-# 便签（DeskNote）
+# DeskNote · 便签
 
-Windows 桌面极简便签：一个能换行的文本框，窗口可自由拉伸，`Alt+F3` 呼出并置顶，点到别的软件就沉到最底层。
+**简体中文** | [English](README.en.md)
+
+一个安静的 Windows 桌面便签。按 `Alt+F3` 随时呼出，写下灵感，切回工作；内容自动保存。
+
+[下载最新版本](https://github.com/suboy1219/desk-note/releases/latest) · [所有版本](https://github.com/suboy1219/desk-note/releases)
+
+![DeskNote 亮色与暗色界面示意](docs/images/themes.png)
+
+*按实际窗口布局绘制的界面示意，使用公开示例文字；不是实机截图。应用界面目前为中文，支持输入中英文。*
 
 ## 功能
 
-- **一个文本框**：支持换行、Tab、滚动，输入即自动保存（约 0.6 秒防抖）。
-- **可自由拉伸**：任意拖拽窗口边缘改变大小，最小 300×220。
-- **`Alt+F3` 全局快捷键**：任何程序里按一下，便签立刻弹到最前面并获得焦点；再按一次收起。
-- **置顶 / 靠后**：呼出时窗口置顶（TopMost）；点击其它软件后自动取消置顶并沉到窗口最底层。
-- **亮色 / 暗色双主题**：底部右侧按钮或 `Ctrl+T` 切换，标题栏同步变色，选择会记住。
-- **不占任务栏、不进 Alt+Tab**：窗口是工具窗口，任务栏里没有按钮，只能靠 `Alt+F3` 呼出。
-- **随电脑开机自启**：登录后静默启动（不弹窗），按 `Alt+F3` 才出现。
-- **单实例**：重复启动不会开第二个窗口。
+- **随叫随到**：`Alt+F3` 全局呼出 / 收起，呼出时置顶并聚焦。
+- **专注工作**：点击其他软件后取消置顶、沉到底层；平时不显示任务栏按钮。
+- **自动保存**：停止输入约 0.6 秒后保存，失焦或退出时也会保存。
+- **亮色 / 暗色**：`Ctrl+T` 或右下角按钮切换，记住主题偏好。
+- **轻巧编辑**：多行纯文本、Tab、滚动与可拉伸窗口，最小 300 × 220。
+- **单实例**：重复启动不会打开多个便签。
+- **可选开机自启**：支持 `--startup` 参数，登录后先隐藏，等待快捷键呼出。
 
-## 使用
+## 下载与运行
 
-桌面双击 `便签` 图标（快捷方式指向 `dist\DeskNote.exe`）。
+在 [Releases](https://github.com/suboy1219/desk-note/releases/latest) 选择 **Windows x64** 压缩包，解压到固定目录后双击 `DeskNote.exe`。
 
-- `Alt+F3`：呼出 / 收起（全局，任何界面都有效）
-- `Esc`：收起（沉到底层）
-- `Ctrl+S`：立即保存（平时不用按，自动保存）
-- `Ctrl+T`：切换亮色 / 暗色主题（也可点右下角「暗色 / 亮色」按钮）
-- 右上角 `X` / `Alt+F4`：退出程序
+| 文件 | 适合谁 | 运行要求 |
+| --- | --- | --- |
+| `DeskNote-v1.0.0-win-x64-standalone.zip` | 推荐，大多数用户 | 已包含 .NET 运行时 |
+| `DeskNote-v1.0.0-win-x64-framework-dependent.zip` | 已安装 .NET 的用户 | .NET 10 Desktop Runtime x64 |
+| `SHA256SUMS.txt` | 校验下载文件 | 比对 SHA-256 哈希值 |
 
-> 因为不在任务栏显示，收起后请用 `Alt+F3` 唤回。若 `Alt+F3` 被别的软件占用导致注册失败，程序会自动退回任务栏显示并在状态栏提示，避免无法唤出。
+支持 Windows 10 / 11 x64，无需安装器。完整包首次运行时会将内嵌本机库解压到临时目录。精简包请安装 [.NET 10 Desktop Runtime x64](https://dotnet.microsoft.com/download/dotnet/10.0)。
 
-## 开机自启
+> 平时不在任务栏显示，收起后请用 `Alt+F3` 唤回。若快捷键被其他软件占用，应用会提示并退回任务栏显示。
 
-启动项是一个快捷方式，位置：
+## 快捷键
 
-```
-%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\便签.lnk
-```
+| 快捷键 | 操作 |
+| --- | --- |
+| `Alt+F3` | 全局呼出 / 收起 |
+| `Esc` | 隐藏窗口 |
+| `Ctrl+S` | 立即保存 |
+| `Ctrl+T` | 切换亮色 / 暗色 |
+| `Alt+F4` 或右上角 `X` | 退出程序 |
 
-参数带 `--startup`，表示启动后先隐藏，等你按 `Alt+F3`。想取消自启，删掉这个快捷方式即可（也可以在「设置 → 应用 → 启动」里关掉）。手动双击桌面图标启动时不会隐藏，窗口会直接出现。
+## 开机自启（可选）
 
-## 数据保存位置
+程序不会自动修改启动项。
 
-```
-%APPDATA%\DeskNote\note.txt
-```
+1. 为解压后的 `DeskNote.exe` 创建快捷方式。
+2. 在快捷方式「属性 → 目标」的路径后加上 ` --startup`，例如：`"C:\Apps\DeskNote\DeskNote.exe" --startup`。
+3. 将快捷方式放入以下文件夹（可粘贴到资源管理器地址栏）：
 
-纯文本 UTF-8，可以直接用记事本打开、备份或替换。主题偏好保存在同目录 `settings.json`（`{"Theme":"dark"}`），删掉即可恢复默认亮色。
+   ```text
+   %APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup
+   ```
 
-## 构建
+登录后在后台运行，按 `Alt+F3` 呼出。删除快捷方式即可取消自启。不带参数手动启动时直接显示窗口。`--silent` 与 `--startup` 等效。
+
+## 数据与备份
+
+| 文件 | 位置 |
+| --- | --- |
+| 便签内容（UTF-8 纯文本） | `%APPDATA%\DeskNote\note.txt` |
+| 主题偏好 | `%APPDATA%\DeskNote\settings.json` |
+
+退出程序后复制 `note.txt` 即可备份或还原。更新时替换程序文件即可，数据保存在独立目录。删除 `settings.json` 可恢复默认亮色主题。
+
+## 从源码构建
+
+需要 Windows 和 .NET 10 SDK。
 
 ```powershell
-cd D:\github\desk-note
-dotnet publish DeskNote.csproj -c Release -r win-x64 -p:SelfContained=false -p:PublishSingleFile=true -o dist
+git clone https://github.com/suboy1219/desk-note.git
+cd desk-note
+dotnet build DeskNote.csproj -c Release
 ```
 
-输出 `dist\DeskNote.exe`（约 240 KB，依赖已安装的 .NET 10 桌面运行时）。
+完整包（包含运行时）：
 
-如需完全免运行时的绿色文件，把 `-p:SelfContained=false` 换成 `-p:SelfContained=true`，体积约 100 MB。
+```powershell
+dotnet publish DeskNote.csproj -c Release -r win-x64 -p:SelfContained=true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=None -p:DebugSymbols=false --artifacts-path dist/build/standalone -o dist/standalone
+```
 
-## 文件说明
+精简包（依赖已安装的 .NET 10 Desktop Runtime）：
+
+```powershell
+dotnet publish DeskNote.csproj -c Release -r win-x64 -p:SelfContained=false -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false --artifacts-path dist/build/framework-dependent -o dist/framework-dependent
+```
+
+推送 `v*.*.*` 版本标签后，[发布工作流](.github/workflows/release.yml) 会构建两个包、生成 SHA-256 校验文件，并创建 GitHub Release。
+
+## 源码结构
 
 | 文件 | 作用 |
 | --- | --- |
-| `Program.cs` | 入口，单实例互斥 |
-| `NoteForm.cs` | 窗口、文本框、自动保存、快捷键与置顶逻辑 |
-| `Interop.cs` | Win32 互操作（RegisterHotKey / SetWindowPos 等） |
-| `app.ico` | 图标（多尺寸，exe 与窗口/任务栏共用） |
-| `dist\DeskNote.exe` | 发布产物 |
+| `Program.cs` | 程序入口、单实例与启动参数 |
+| `NoteForm.cs` | 编辑、自动保存、主题与窗口行为 |
+| `Interop.cs` | Win32 热键、窗口层级与主题接口 |
+| `app.ico` | 应用图标 |
 
 ## 已知限制
 
-- `Alt+F3` 是全局热键，若被其它软件（如显卡驱动面板、录屏工具）占用，启动后底部状态栏会提示注册失败；关闭冲突软件后重启本程序即可。
-- 内容以纯文本保存，不支持图片、富文本、多个便签页。
+- 只有一个纯文本便签，不支持图片、富文本、多页或云同步。
+- `Alt+F3` 若被其他软件占用，请关闭冲突软件后重启便签。
+- 文档提供中英文版本，应用自身的按钮与提示目前为中文。

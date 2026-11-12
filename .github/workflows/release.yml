@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    env:
+      RELEASE_TAG: ${{ github.ref_name }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Build and package Windows x64
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $projectVersion = ([xml](Get-Content DeskNote.csproj)).Project.PropertyGroup.Version
+          if ($env:RELEASE_TAG -ne "v$projectVersion") {
+            throw "Tag $env:RELEASE_TAG does not match project version $projectVersion."
+          }
+          New-Item -ItemType Directory -Path dist/releases -Force | Out-Null
+          foreach ($variant in @('standalone', 'framework-dependent')) {
+            $outputPath = "dist/packages/$variant"
+            $selfContained = if ($variant -eq 'standalone') { 'true' } else { 'false' }
+            dotnet publish DeskNote.csproj -c Release -r win-x64 -p:SelfContained=$selfContained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=None -p:DebugSymbols=false --artifacts-path "dist/build/$variant" -o $outputPath --nologo
+            if ($LASTEXITCODE -ne 0) { throw "Publish failed for $variant." }
+            Copy-Item README.md, README.en.md -Destination $outputPath
+            Copy-Item docs -Destination $outputPath -Recurse -Force
+            Compress-Archive -Path "$outputPath/*" -DestinationPath "dist/releases/DeskNote-$env:RELEASE_TAG-win-x64-$variant.zip" -Force
+          }
+          $hashes = Get-ChildItem dist/releases/*.zip | Sort-Object Name | ForEach-Object {
+            $hash = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+            "$hash  $($_.Name)"
+          }
+          $hashes | Set-Content -LiteralPath dist/releases/SHA256SUMS.txt -Encoding utf8NoBOM
+      - name: Publish GitHub Release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $assets = @(Get-ChildItem dist/releases -File | ForEach-Object { $_.FullName })
+          gh release create $env:RELEASE_TAG @assets --verify-tag --title "DeskNote $env:RELEASE_TAG" --notes-file .github/RELEASE_NOTES.md --draft
+          if ($LASTEXITCODE -ne 0) { throw 'Release creation failed.' }
+          gh release edit $env:RELEASE_TAG --draft=false --latest
+          if ($LASTEXITCODE -ne 0) { throw 'Release publication failed.' }
