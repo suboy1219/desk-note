@@ -14,6 +14,7 @@ A quiet Windows desktop notepad. Press `Alt+F3` (customizable), capture a though
 
 - **Always within reach**: a global shortcut shows or hides the note, brought to the front and focused. The default is `Alt+F3`; change it via the **快捷键** button at the bottom right.
 - **Stay focused**: switching to another app removes the always-on-top state and moves the note behind other windows. No taskbar button during normal use.
+- **System tray**: click the tray icon to show the note, or right-click to show, hide, or exit the app.
 - **Automatic saving**: saves about 0.6 seconds after typing stops, and on focus loss or exit.
 - **Light and dark themes**: use `Ctrl+T` or the bottom-right button; your preference is remembered.
 - **Simple editing**: multiline plain text, tabs, no auto-wrap (long lines scroll horizontally), and a resizable window, with a minimum size of 300 × 220.
@@ -27,13 +28,13 @@ Choose a **Windows x64** ZIP from [Releases](https://github.com/suboy1219/desk-n
 
 | File | Best for | Requirements |
 | --- | --- | --- |
-| `DeskNote-v1.2.1-win-x64-standalone.zip` | Recommended for most users | Includes the .NET runtime |
-| `DeskNote-v1.2.1-win-x64-framework-dependent.zip` | Users who already have .NET | .NET 10 Desktop Runtime x64 |
+| `DeskNote-v1.3.0-win-x64-standalone.zip` | Recommended for most users | Includes the .NET runtime |
+| `DeskNote-v1.3.0-win-x64-framework-dependent.zip` | Users who already have .NET | .NET 10 Desktop Runtime x64 |
 | `SHA256SUMS.txt` | Verifying downloads | Compare SHA-256 file hashes |
 
 Supports Windows 10 / 11 x64; no installer is needed. The standalone build extracts its bundled native libraries to a temporary directory on first launch. The smaller build requires [.NET 10 Desktop Runtime x64](https://dotnet.microsoft.com/download/dotnet/10.0).
 
-> There is normally no taskbar button. Use your current shortcut (default `Alt+F3`) to bring the note back after hiding it. If another app has claimed the shortcut, DeskNote shows a warning and falls back to a taskbar button.
+> There is normally no taskbar button. Click the system tray icon or use your current shortcut (default `Alt+F3`) to bring the note back after hiding it. If another app has claimed the shortcut, DeskNote shows a warning and falls back to a taskbar button; the tray icon remains available.
 
 ## Keyboard shortcuts
 

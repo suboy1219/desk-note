@@ -105,6 +105,8 @@ internal sealed class NoteForm : Form
     private readonly Panel _editorHost;
     private readonly System.Windows.Forms.Timer _saveTimer;
     private readonly ToolTip _toolTip = new();
+    private readonly NotifyIcon _trayIcon;
+    private readonly ContextMenuStrip _trayMenu;
     private readonly string _notePath;
     private readonly string _settingsPath;
 
@@ -266,6 +268,46 @@ internal sealed class NoteForm : Form
 
         ActiveControl = _editorElementHost;
         ApplyTheme();
+
+        _trayMenu = new ContextMenuStrip();
+        _trayMenu.Items.Add("显示便签", null, (_, _) => ShowInFront());
+        var hideItem = _trayMenu.Items.Add("隐藏便签", null, (_, _) => HideToBack());
+        _trayMenu.Items.Add(new ToolStripSeparator());
+        _trayMenu.Items.Add("退出", null, (_, _) => Close());
+        _trayMenu.Opening += (_, _) => hideItem.Enabled = Visible;
+
+        _trayIcon = new NotifyIcon
+        {
+            Icon = Icon ?? SystemIcons.Application,
+            ContextMenuStrip = _trayMenu,
+            Visible = true,
+        };
+        _trayIcon.MouseClick += (_, e) =>
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ShowInFront();
+            }
+        };
+        UpdateHotkeyUi();
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            if (_trayIcon is not null)
+            {
+                _trayIcon.Visible = false;
+                _trayIcon.Dispose();
+            }
+
+            _trayMenu?.Dispose();
+            _saveTimer?.Dispose();
+            _toolTip.Dispose();
+        }
+
+        base.Dispose(disposing);
     }
 
     protected override void OnLoad(EventArgs e)
@@ -306,7 +348,15 @@ internal sealed class NoteForm : Form
 
         if (!_hotkeyRegistered)
         {
-            ShowInTaskbar = true;
+            // Changing ShowInTaskbar recreates the handle. Wait until the
+            // current handle has finished being created before doing so.
+            BeginInvoke((Action)(() =>
+            {
+                if (!IsDisposed && !_hotkeyRegistered)
+                {
+                    ShowInTaskbar = true;
+                }
+            }));
             _status.ForeColor = Color.FromArgb(196, 92, 78);
             _status.Text = _hotkeyText + " 注册失败：已被占用，暂在任务栏显示";
             Text = "便签（" + _hotkeyText + " 不可用）";
@@ -530,8 +580,11 @@ internal sealed class NoteForm : Form
         return false;
     }
 
-    private void UpdateHotkeyUi() =>
+    private void UpdateHotkeyUi()
+    {
         _toolTip.SetToolTip(_hotkeyButton, "更换全局呼出快捷键（当前 " + _hotkeyText + "）");
+        _trayIcon.Text = "DeskNote 便签 · " + _hotkeyText;
+    }
 
     private void ApplyTheme()
     {
