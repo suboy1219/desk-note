@@ -1,5 +1,7 @@
 # DeskNote · 便签
 
+官网: [https://suboy1219.github.io/suboy](https://suboy1219.github.io/suboy)
+
 **简体中文** | [English](README.en.md)
 
 一个安静的 Windows 桌面便签。按 `Alt+F3`（可更换）随时呼出，写下灵感，切回工作；内容自动保存。

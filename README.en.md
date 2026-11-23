@@ -1,5 +1,7 @@
 # DeskNote
 
+官网: [https://suboy1219.github.io/suboy](https://suboy1219.github.io/suboy)
+
 [简体中文](README.md) | **English**
 
 A quiet Windows desktop notepad. Press `Alt+F3` (customizable), capture a thought, and get back to work. Your notes save automatically.
