@@ -273,6 +273,7 @@ internal sealed class NoteForm : Form
         _trayMenu.Items.Add("显示便签", null, (_, _) => ShowInFront());
         var hideItem = _trayMenu.Items.Add("隐藏便签", null, (_, _) => HideToBack());
         _trayMenu.Items.Add(new ToolStripSeparator());
+        _trayMenu.Items.Add(HelpMenu.Create());
         _trayMenu.Items.Add("退出", null, (_, _) => Close());
         _trayMenu.Opening += (_, _) => hideItem.Enabled = Visible;
 

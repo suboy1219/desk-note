@@ -110,3 +110,7 @@ Pushing a `v*.*.*` version tag triggers the [release workflow](.github/workflows
 - One plain-text note; no images, rich text, multiple pages, or cloud sync.
 - If another app uses the default `Alt+F3`, click the **快捷键** button at the bottom right to choose another combination.
 - Documentation is available in Chinese and English; the app's buttons and messages are currently in Chinese.
+
+## Check for updates
+
+Right-click the system tray icon and choose **Help → Check for updates** (帮助 → 检测更新). The app compares its version with the latest stable GitHub release and offers to open the release page when an update is available. It also reports missing releases and connection errors.
